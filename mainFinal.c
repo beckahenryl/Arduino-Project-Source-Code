@@ -1,4 +1,3 @@
-
 ///////////////////////////////////////////
 // Program Name: <Burn the Forest?>
 // Program Version: 1.0
@@ -60,7 +59,39 @@ void setup() {
 
   Serial.begin(9600);
 
-  Serial.print("Enter Forest");
+  //display all of the pins used in program through arrays
+  char anaLog1[2] = "A0";
+  char anaLog2[2] = "A1";
+  char anaLog3[2] = "A2";
+  char anaLog4[2] = "A3";
+  char anaLog5[2] = "A5";
+
+  const int size_of_array_analog = 5;
+
+  const int size_of_array_digital = 11;
+
+  int displayAnalogPins[size_of_array_analog] = {anaLog1,
+    anaLog2, anaLog3, anaLog4, anaLog5};
+
+  int displayDigitalPins[size_of_array_digital] = {2,3,4,5,6,
+    7,8,9,10,11,12};
+  Serial.println("Analog Pins Used");
+
+  for (int analogPins = 0; analogPins < size_of_array_analog;
+   analogPins++)
+  {
+    Serial.println(displayAnalogPins[analogPins]);
+  }
+
+  Serial.println("Digital Pins Used");
+
+  for (int digitalPins = 0; digitalPins < size_of_array_digital;
+   digitalPins++)
+  {
+    Serial.println(displayDigitalPins[digitalPins]);
+  }  
+
+  Serial.println("Enter Forest");
   
 
   /*LEDs*/
@@ -167,8 +198,9 @@ void loop() {
       // send the 10-bit sensor value out the serial port
       Serial.print("sensor Value: ");
       Serial.print(sensorVal);
-      //store value into EEPROM
-      EEPROM.write(address, sensorVal);
+
+      //call function to write value to EEPROM
+      WriteSensorValue(address, sensorVal);
 
       //read the stored value after restarting the program
       readValue = EEPROM.read(address);
@@ -225,4 +257,9 @@ void loop() {
         digitalWrite(controlPin2, LOW);
       }
     }
+  }
+
+  //EEPROM function to write temp sensor value
+  void WriteSensorValue(int addr, int val){
+    return EEPROM.write(addr, val);
   }
